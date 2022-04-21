@@ -23,7 +23,9 @@ import os
 
 # print(df.head())
 
-orgunit = [file for file in os.listdir('orgunits')]
-df1 = pd.read_csv(os.path.join('orgunits', orgunit[0]))
-print(df1.head())
+# orgunit = [file for file in os.listdir('orgunits')]
+# df1 = pd.read_csv(os.path.join('orgunits', orgunit[0]))
+# print(df1.head())
+files = os.listdir('initial_files')
+print(files)
 
