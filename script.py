@@ -1,8 +1,24 @@
 import pandas as pd
 import numpy as np
 import os
+import uuid
 
-# 1. Merge datim org unit to pivot on keycode 
+list_dir = [
+    'files_with_orgunits',
+    'transformed_files',
+    'final_files',
+    'merged',
+    'verificacao/final_files',
+    'verificacao/files_with_org_units_no_match'
+    ]
+
+
+# Removing all the files in related directories
+for dir in list_dir:
+    for f in os.listdir(dir):
+        os.remove(os.path.join(dir, f))
+
+# 1. Merge datim org unit and dataelements to pivot on keycode 
 orgunit = [file for file in os.listdir('orgunits')]
 df_orgunit = pd.read_csv(os.path.join('orgunits', orgunit[0]))
 datim_dataelements = [file for file in os.listdir('datim_dataelements')]
@@ -18,11 +34,11 @@ for file in files:
     df2.columns = df2.columns.str.lstrip()
 
     df = pd.merge(df_orgunit, df2, on='Keycode', how='inner')
-    df.to_csv('files_with_orgunits/file'+ str(count) + '.csv', index=False)
+    df.to_csv('files_with_orgunits/'+ file, index=False)
   
     print(f'File{count}:{file}')
 
-    df = pd.read_csv('files_with_orgunits/file'+ str(count) + '.csv')
+    df = pd.read_csv('files_with_orgunits/'+ file)
 
 # 2. Unpivot columns
     columns = df.loc[:,~df.columns.isin(
@@ -40,14 +56,13 @@ for file in files:
         var_name = 'dataelement'
     )
 
-    df_unpivoted.to_csv('transformed_files/file'+ str(count) + '.csv', index=False)
-    # datim_datalements = pd.read_csv('DataelementsUpdated.csv', encoding='ISO-8859-1')
-    # datim_datalements = pd.read_csv('datim_dataelements.csv')
-    df = pd.read_csv('transformed_files/file'+ str(count) + '.csv')
+    df_unpivoted.to_csv('transformed_files/'+ file, index=False)
+   
+    df = pd.read_csv('transformed_files/'+ file)
 
     df_final = pd.merge(df_datim, df, on='dataelement', how='inner')
 
-    df_final.to_csv('final_files/file'+ str(count) + '.csv', index=False)
+    df_final.to_csv('final_files/'+ str(uuid.uuid4()) + file, index=False)
 
 df_list = []
 final_files = os.listdir('final_files')
