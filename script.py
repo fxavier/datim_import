@@ -14,11 +14,13 @@ list_dir = [
 
 
 # Removing all the files in related directories
+print('Removing old files........')
 for dir in list_dir:
     for f in os.listdir(dir):
         os.remove(os.path.join(dir, f))
 
 # 1. Merge datim org unit and dataelements to pivot on keycode 
+print('Merging orgunits and unpivoting columns........')
 orgunit = [file for file in os.listdir('orgunits')]
 df_orgunit = pd.read_csv(os.path.join('orgunits', orgunit[0]))
 datim_dataelements = [file for file in os.listdir('datim_dataelements')]
@@ -36,7 +38,7 @@ for file in files:
     df = pd.merge(df_orgunit, df2, on='Keycode', how='inner')
     df.to_csv('files_with_orgunits/'+ file, index=False)
   
-    print(f'File{count}:{file}')
+    print(f'File {count}:{file}')
 
     df = pd.read_csv('files_with_orgunits/'+ file)
 

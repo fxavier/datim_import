@@ -47,8 +47,8 @@ for file in files:
     df = pd.read_csv('transformed_files/'+ file)
 
     df_final = pd.merge(df_datim, df, left_on='dataelement', right_on='dataelement', how='outer', indicator=True)
-
-    df_final.to_csv('verificacao/final_files/'+ str(uuid.uuid4()) + file, index=False)
+  
+    df_final.to_csv('verificacao/final_files/' + str(uuid.uuid4()) + file, index=False)
 
 # df_list = []
 # final_files = os.listdir('final_files')
